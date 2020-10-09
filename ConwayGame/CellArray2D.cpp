@@ -30,6 +30,16 @@ CellArray2D::get_height() const
   return _height;
 }
 
+Cell*
+CellArray2D::get_cell(int x, int y) const
+{
+  if (x < _width && y < _height)
+  {
+    return _array[x][y];
+  }
+  return nullptr;
+}
+
 std::vector<Cell*>
 CellArray2D::get_neighborhood(int radius, NeighborhoodType type) const
 {
