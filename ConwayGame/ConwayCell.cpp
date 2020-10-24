@@ -3,23 +3,28 @@
 //
 
 #include <numeric>
+#include <iostream>
 #include "CellArray.hpp"
 #include "ConwayCell.hpp"
 
-ConwayCell::ConwayCell(int state)
-  : _stay_alive{2, 3},
-    _born{3},
+ConwayCell::ConwayCell(int x, int y, int state)
+  : x(x),
+    y(y),
+    _stay_alive{2, 3},
+    _born{3, 6},
     _state(state),
     _next_state(state)
 {
 
 }
 
-ConwayCell::ConwayCell(const std::set<int>& stay_alive, const std::set<int>& born, int state)
-: _stay_alive(stay_alive),
-  _born(born),
-  _state(state),
-  _next_state(state)
+ConwayCell::ConwayCell(int x, int y, const std::set<int>& stay_alive, const std::set<int>& born, int state)
+  : x(x),
+    y(y),
+    _stay_alive(stay_alive),
+    _born(born),
+    _state(state),
+    _next_state(state)
 {
 
 }
@@ -27,7 +32,7 @@ ConwayCell::ConwayCell(const std::set<int>& stay_alive, const std::set<int>& bor
 void
 ConwayCell::calculate_next_state(const CellArray& world)
 {
-  auto cells = world.get_neighborhood();
+  auto cells = world.get_neighborhood({x, y});
   int live_cells_number = std::accumulate(cells.begin(), cells.end(), 0,
                                           [](int no, Cell* cell){return cell->get_state() == 1 ? ++no : no;});
 

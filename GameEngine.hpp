@@ -12,12 +12,12 @@ class CellArray;
 class GameEngine
 {
 public:
+  explicit GameEngine(CellArray& cell_array);
   void next_epoch();
-  void set_array(std::unique_ptr<CellArray> cellArray);
-
+  CellArray& get_array() {return _cellArray;}
   virtual ~GameEngine() = default;
 private:
-  std::unique_ptr<CellArray> _cellArray;
+  CellArray& _cellArray;
 };
 
 

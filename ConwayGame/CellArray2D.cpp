@@ -2,11 +2,17 @@
 // Created by dominik on 05.10.2020.
 //
 
+#include <memory>
+#include <iostream>
+#include "Canvas.hpp"
 #include "CellArray2D.hpp"
+#include "Cell.hpp"
+#include "Display.hpp"
 
-CellArray2D::CellArray2D(int w, int h)
+CellArray2D::CellArray2D(int w, int h, const std::vector<std::vector<Cell*>>& array)
   : _width(w),
-    _height(h)
+    _height(h),
+    _array(array)
 {
 
 }
@@ -35,15 +41,48 @@ CellArray2D::get_cell(int x, int y) const
 {
   if (x < _width && y < _height)
   {
-    return _array[x][y];
+    return _array[y][x];
   }
   return nullptr;
 }
 
-std::vector<Cell*>
-CellArray2D::get_neighborhood(int radius, NeighborhoodType type) const
+void
+CellArray2D::draw(Display& display) const
 {
+  auto iter = std::make_unique<CellArray2DIterator>(*this, 0, 0);
+  auto* canvas = display.get_canvas();
+  const int size = 10;
+  for (;iter->is_valid(); ++(*iter))
+  {
+    auto x = (*iter).get_x();
+    auto y = (*iter).get_y();
+    auto state = (*(*iter))->get_state();
+    Pen pen = state == 1 ? Pen(Color(255, 255, 255)) : Pen(Color(0, 0, 0));
+    canvas->draw_rect(x*size, y*size, size, size, pen);
+  }
+}
 
+std::vector<Cell*>
+CellArray2D::get_neighborhood(const Coordinates& coordinates, int radius, NeighborhoodType type) const
+{
+  std::vector<Cell*> neighborhood;
+  if (coordinates.size() > 1)
+  {
+    auto x = coordinates[0];
+    auto y = coordinates[1];
+
+    for (auto i = std::max(x - radius, 0); i <= std::min(_width-1, x + radius); ++i)
+    {
+      for (auto j = std::max(y - radius, 0); j <= std::min(_height-1, y + radius); ++j)
+      {
+        if (i != x || j != y)
+        {
+          neighborhood.push_back(_array[j][i]);
+        }
+      }
+    }
+  }
+  return neighborhood;
 }
 
 CellArray2DIterator::CellArray2DIterator(const CellArray2D& array, int x, int y)
@@ -78,6 +117,7 @@ CellArray2DIterator::first()
 {
   _x = 0;
   _y = 0;
+  _valid = true;
 }
 
 bool
@@ -96,4 +136,16 @@ Cell*
 CellArray2DIterator::operator*()
 {
   return _array.get_cell(_x, _y);
+}
+
+int
+CellArray2DIterator::get_x() const
+{
+  return _x;
+}
+
+int
+CellArray2DIterator::get_y() const
+{
+  return _y;
 }

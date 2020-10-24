@@ -5,12 +5,13 @@
 #ifndef LIFE_DISPLAY_HPP
 #define LIFE_DISPLAY_HPP
 
-class CellArray;
+class Canvas;
 
 class Display
 {
 public:
-  virtual void draw_array(const CellArray& array) = 0;
+  virtual Canvas* get_canvas() = 0;
+  virtual void show_display() = 0;
   virtual ~Display() = default;
 };
 

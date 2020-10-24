@@ -10,9 +10,11 @@
 class CellArray2D : public CellArray
 {
 public:
-  CellArray2D(int w, int h);
+  CellArray2D(int w, int h, const std::vector<std::vector<Cell*>>& array);
   CellArrayIterator* create_iterator() const override;
-  std::vector<Cell*> get_neighborhood(int radius=1, NeighborhoodType type=NeighborhoodType::MOORE) const override;
+  std::vector<Cell*> get_neighborhood(
+          const Coordinates& coordinates, int radius, NeighborhoodType type) const override;
+  void draw(Display& display) const override;
   Cell* get_cell(int x, int y) const;
   int get_width() const;
   int get_height() const;
@@ -32,6 +34,9 @@ public:
   void next() override;
   void operator++() override;
   Cell* operator*() override;
+
+  int get_x() const;
+  int get_y() const;
 
 private:
   int _x;
