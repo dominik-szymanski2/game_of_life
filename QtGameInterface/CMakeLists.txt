@@ -20,5 +20,5 @@ add_compile_options(-fPIC)
 
 add_library(QtGameInterface GameInterface.hpp GameInterface.cpp)
 
-target_include_directories(QtDisplay PUBLIC /home/dominik/Qt/5.15.0/gcc_64/include/ ${MAIN_INCLUDES})
+target_include_directories(QtGameInterface PUBLIC /home/dominik/Qt/5.15.0/gcc_64/include/ ${MAIN_INCLUDES})
 target_link_libraries(QtGameInterface Qt5::Widgets)

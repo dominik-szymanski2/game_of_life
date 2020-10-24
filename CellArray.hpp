@@ -8,7 +8,7 @@
 #include <vector>
 
 class Cell;
-class Display;
+class Canvas;
 
 enum class NeighborhoodType
 {
@@ -36,7 +36,7 @@ public:
   virtual CellArrayIterator* create_iterator() const = 0;
   virtual std::vector<Cell*> get_neighborhood(
           const Coordinates& coordinates, int radius=1, NeighborhoodType type=NeighborhoodType::MOORE) const = 0;
-  virtual void draw(Display& display) const = 0;
+  virtual void draw(Canvas& canvas) const = 0;
   virtual ~CellArray() = default;
 };
 

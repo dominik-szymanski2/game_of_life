@@ -14,7 +14,7 @@ public:
   CellArrayIterator* create_iterator() const override;
   std::vector<Cell*> get_neighborhood(
           const Coordinates& coordinates, int radius, NeighborhoodType type) const override;
-  void draw(Display& display) const override;
+  void draw(Canvas& canvas) const override;
   Cell* get_cell(int x, int y) const;
   int get_width() const;
   int get_height() const;

@@ -47,10 +47,9 @@ CellArray2D::get_cell(int x, int y) const
 }
 
 void
-CellArray2D::draw(Display& display) const
+CellArray2D::draw(Canvas& canvas) const
 {
   auto iter = std::make_unique<CellArray2DIterator>(*this, 0, 0);
-  auto* canvas = display.get_canvas();
   const int size = 10;
   for (;iter->is_valid(); ++(*iter))
   {
@@ -58,7 +57,7 @@ CellArray2D::draw(Display& display) const
     auto y = (*iter).get_y();
     auto state = (*(*iter))->get_state();
     Pen pen = state == 1 ? Pen(Color(255, 255, 255)) : Pen(Color(0, 0, 0));
-    canvas->draw_rect(x*size, y*size, size, size, pen);
+    canvas.draw_rect(x*size, y*size, size, size, pen);
   }
 }
 
